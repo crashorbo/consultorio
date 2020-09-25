@@ -590,12 +590,15 @@ class Reportemov(View):
         total_particular_costo = 0
         total_particular_cobrado = 0
         total_asegurado_costo = 0
+        total_particulares = 0
+        total_asegurados = 0
         movimiento.append(header)
         movimiento.append(subparticular)
         
         items = Agendaserv.objects.filter(fecha=datetime.strptime(hoy.strftime("%Y-%m-%d"), "%Y-%m-%d"), agenda__deleted=False)
         for item in items:
             if not item.agenda.tipo:
+                total_particulares = total_particulares + 1
                 if item.estado:
                     aux = item.costo
                     total_particular_cobrado = total_particular_cobrado + item.costo
@@ -603,37 +606,42 @@ class Reportemov(View):
                     aux = Decimal('0.00')
                 if item.descuento:
                     this_particular = [
+                        Paragraph(str(total_particulares), celda),
                         Paragraph((item.agenda.paciente.nombres + ' ' + item.agenda.paciente.apellidos), celdaremarcada),
                         Paragraph(item.servicio.nombre, celdaremarcada), Paragraph(str(item.costo), celdaremarcadader),
                     ]
                 else:
                     this_particular = [
+                        Paragraph(str(total_particulares), celda),
                         Paragraph((item.agenda.paciente.nombres + ' ' + item.agenda.paciente.apellidos), celda),
                         Paragraph(item.servicio.nombre, celda), Paragraph(str(item.costo), celdaderecha),
                     ]
                 particulares.append(this_particular)
                 total_particular_costo = total_particular_costo + item.costo
             else:
+                total_asegurados = total_asegurados + 1
                 if item.descuento:
                     this_asegurado = [
+                        Paragraph(str(total_asegurados), celda),
                         Paragraph((item.agenda.paciente.nombres+' '+item.agenda.paciente.apellidos), celdaremarcada),
                         Paragraph(item.servicio.nombre, celdaremarcada), Paragraph(str(item.agenda.procedencia), celdaremarcada),
                         Paragraph(str(item.costo), celdaremarcadader)
                     ]
                 else:
                     this_asegurado = [
+                        Paragraph(str(total_asegurados), celda),
                         Paragraph((item.agenda.paciente.nombres + ' ' + item.agenda.paciente.apellidos), celda),
                         Paragraph(item.servicio.nombre, celda), Paragraph(str(item.agenda.procedencia), celda),
                         Paragraph(str(item.costo), celdaderecha)
                     ]
                 asegurados.append(this_asegurado)
                 total_asegurado_costo = total_asegurado_costo + item.costo
-        this_particular = [Paragraph('TOTAL', celdabold), Paragraph('', celda), Paragraph(str(total_particular_costo), celdaderechabold)]
+        this_particular = [Paragraph('', celda), Paragraph('TOTAL', celdabold), Paragraph('', celda), Paragraph(str(total_particular_costo), celdaderechabold)]
         particulares.append(this_particular)
-        this_asegurado = [Paragraph('TOTAL', celdabold), Paragraph('', celda), Paragraph('', celda), Paragraph(str(total_asegurado_costo),celdaderechabold)]
+        this_asegurado = [Paragraph('', celda), Paragraph('TOTAL', celdabold), Paragraph('', celda), Paragraph('', celda), Paragraph(str(total_asegurado_costo),celdaderechabold)]
         asegurados.append(this_asegurado)
-        headings = (Paragraph('Nombre', cabecera), Paragraph('Consulta', cabecera), Paragraph('Costo', cabecera))
-        t1 = Table([headings] + particulares, colWidths=[11 * cm, 6 * cm, 2 * cm])
+        headings = (Paragraph('Nro', cabecera), Paragraph('Nombre', cabecera), Paragraph('Detalle', cabecera), Paragraph('Costo', cabecera))
+        t1 = Table([headings] + particulares, colWidths=[1 * cm, 10 * cm, 6 * cm, 2 * cm])
         t1.setStyle(TableStyle(
         [
             ('GRID', (0, 0), (6, -1), 1, colors.black),
@@ -642,8 +650,8 @@ class Reportemov(View):
         ]
         ))
 
-        headings = (Paragraph('Nombre', cabecera), Paragraph('Consulta', cabecera), Paragraph('Procedencia', cabecera), Paragraph('Costo',cabecera))
-        t2 = Table([headings] + asegurados, colWidths=[8 * cm, 3 * cm, 6 * cm, 2 * cm])
+        headings = (Paragraph('Nro', cabecera), Paragraph('Nombre', cabecera), Paragraph('Detalle', cabecera), Paragraph('Procedencia', cabecera), Paragraph('Costo',cabecera))
+        t2 = Table([headings] + asegurados, colWidths=[1 * cm, 7 * cm, 3 * cm, 6 * cm, 2 * cm])
         t2.setStyle(TableStyle(
         [
             ('GRID', (0, 0), (6, -1), 1, colors.black),
