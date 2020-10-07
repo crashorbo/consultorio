@@ -1,0 +1,232 @@
+#main-wrapper {
+    background-color: #fff;
+    font-size: 14px;
+}
+
+.tabs-navigation {
+    display: flex;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.tabs-reports {
+    overflow: auto;
+    justify-content: normal;
+}
+
+.tab-link {
+    list-style: none;
+}
+
+.tab-link a {
+    display: inline-block;
+    padding: 15px 15px 10px;
+    border-bottom: 4px solid transparent;
+    text-decoration: none;
+    text-align: center;
+    color: #7f95bb;
+}
+
+.tab-link a.active {
+    border-color: #02214B;
+    font-weight: 600;
+    color: #011429;
+}
+
+.division {
+    margin: 0;
+    border-top: 1px;
+    border-bottom: 1px;
+    border-style: solid;
+    border-color: #d9e3eb;
+    height: 20px;
+    background-color: #f9fbfc;
+}
+
+.addon-dashboard {
+    padding: 0 30px;
+}
+
+.addon-daily-sheet {
+    padding: 0 30px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0 30px;
+    border-bottom: #d9e3eb 1px solid;
+    padding-bottom: 15px;
+}
+
+h3 {
+    font-weight: 700;
+    color: #011429; 
+}
+
+.title {
+    margin: 0;
+    font-size: 22px;
+    font-style: italic;
+}
+
+.title em {
+    font-weight: 400;
+}
+
+.sheet-body {
+    display: flex;
+    align-items: center;
+}
+
+.body-section {
+    display: flex;
+    align-items: center;
+    width: 350px;
+}
+
+.body-section:nth-child(2) {
+    width: auto;
+    min-width: 350px;
+    margin-left: auto;
+}
+
+label {
+    margin-bottom: 5px;
+    color: #76869e;
+}
+
+.label-rpte {
+    padding-left: 20px;
+}
+
+.sheet-body input, .sheet-body label, .sheet-body select {
+    margin-right: 5px;
+    margin-bottom: 0;
+}
+
+.body-section:nth-child(2) label:first-child, .label-rpte {
+    min-width: 180px;
+}
+
+.date {
+    min-width: 140px;
+    background: url(../../images/calendar-icon.png) top 12px right 10px no-repeat #fff;
+}
+
+.sheet-body input {
+    cursor: pointer;
+}
+
+.input, input[type=text], input[type=email], input[type=tel], input[type=password], input[type=number] {
+    width: 100%;
+    height: 42px;
+    padding: 6px 12px;
+    border: 1px solid #d9e3eb;
+    border-radius: 4px;
+    box-shadow: none;
+    font: 400 14px/1.4 'Proxima Nova',Helvetica,Arial,sans-serif;
+    transition: border-color 150ms ease-in-out,box-shadow 150ms ease-in-out;
+}
+
+select {
+    width: 100%;
+    height: 42px;
+    padding: 6px 12px;
+    background-color: #fff;
+    border: 1px solid #d9e3eb;
+    border-radius: 4px;
+    font: 400 14px/1.4;
+    transition: border-color 150ms ease-in-out,box-shadow 150ms ease-in-out;
+}
+
+.addon-daily-sheet .report-container {
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.light-table {
+    word-wrap: break-word;
+}
+
+.app-light-table, .app-light-table .lt-body-wrap {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+}
+
+.app-light-table {
+    height: inherit;
+    overflow: auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.app-light-table {
+    width: 100%;
+    min-width: 100%;
+    margin: 16px auto;
+    border-collapse: collapse;    
+    height: 65vh;
+    width: calc(860px + 17px);
+    overflow-x: auto;
+}
+
+.app-light-table .lt-foot-wrap, .app-light-table .lt-head-wrap {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+}
+
+table {
+    background-color: transparent;
+}
+
+.app-light-table table, .pika-table, table {
+    border-collapse: collapse;
+}
+
+.app-light-table table {
+    table-layout: fixed;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.app-light-table .lt-column {
+    position: relative;
+}
+
+.app-light-table .align-left {
+    text-align: left;
+}
+
+.app-light-table .align-center {
+    text-align: center;
+}
+
+.app-light-table .lt-column {
+    font-weight: 200;
+    font-size: 12px;
+    padding: 10px;
+}
+
+.app-light-table thead .lt-column {
+    border-top: 1px solid #DADADA;
+    border-bottom: 1px solid #DADADA;
+    background-color: #f9fbfc;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.app-light-table .lt-column.is-draggable, .app-light-table .lt-column.is-sortable {
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

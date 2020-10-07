@@ -4,40 +4,32 @@
 {% block css %}
   <!-- Date picker plugins css -->
   <link href="{% static "assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css" %}" rel="stylesheet" type="text/css" />
+  <link href="{% static "assets/plugins/vanillajs-datepicker/datepicker-bs4.css" %}" rel="stylesheet" />
+  <link href={% static 'assets/paginas/agenda/agenda-listar.css' %} rel="stylesheet" />
 {% endblock %}
 
 {% block contenido %}
-<div class="row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Lista de Consultas</h4>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="row">
-              <div class="col-md-6 col-sm-12">
-                <input id="fecharepor" type="text" class="form-control form-control-sm fecha" value="{% now "d/m/Y" %}">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="row">
-              <div class="col-md-12 col-sm-12 text-right">
-                <button onclick="imprimirlista(event, this);" class="btn btn-sm waves-effect waves-light btn-inverse">Imprimir</button>
-                <a href="{% url 'index' %}" class="btn btn-sm btn-warning waves-effect waves-light"><i class="ti-back-left"></i></a>
-                <a href="{% url 'logout' %}" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title=""  data-original-title="Salir"><i class="mdi mdi-exit-to-app"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12" id="lista-pacientes">
-            
-          </div>
-        </div>
-      </div>
+<div class="contenedor-lista">
+  <div class="contenedor-header">
+    <div class="search-paciente">
+      <span></span>
     </div>
-  </div>    
+    <div class="date-paciente">
+      <i id="navizq" class="fa fa-caret-left nav-left"></i>
+      <div class="date-picker">
+        <span id="fecha-datepicker"></span>
+        <form id="search-form" action="{% url 'new-agenda-ajax-lista' %}" method="post">
+          {% csrf_token %}
+          <input id="datepicker" name="fecha" type="text" class="form-control small" />
+        </form>
+      </div>      
+      <i id="navder" class="fa fa-caret-right nav-right"></i>
+    </div>
+    <div class="contenedor-actions">
+      <button id="imprimir" class="btn btn-principal"><i class="fa fa-print"></i></button>
+    </div>
+  </div>
+  <ul id="lista-consultas" class="consulta-lista"></ul>
 </div>
 {% endblock %}
 
@@ -45,7 +37,9 @@
 <!-- This is data table -->
 <script src="{% static "assets/plugins/datatables/jquery.dataTables.min.js" %}"></script>
 <!-- Date Picker Plugin JavaScript -->
-<script src="{% static "assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js" %}"></script>
-<script src="{% static "assets/plugins/bootstrap-datepicker/dist/es.js" %}"></script>
+<script src="{% static "assets/plugins/vanillajs-datepicker/datepicker-full.js" %}"></script>
+<script src="{% static "assets/plugins/vanillajs-datepicker/locales/es.js" %}"></script>
+<script src="{% static "assets/plugins/moment/moment.js" %}"></script>
+<script src="{% static "assets/plugins/moment/min/locales.js" %}"></script>
 <script src="{% static "assets/paginas/agenda/agenda-listar.js" %}"></script>
 {% endblock %}

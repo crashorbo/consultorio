@@ -1,0 +1,213 @@
+.contenedor-lista {        
+    width: 100%;
+    height: 100%;
+    border: 1px solid #d9e3eb;
+    border-radius: 2px;
+    overflow: hidden;    
+}
+
+.contenedor-header {
+    align-items: center;
+    padding: 0 10px;
+    background-color: #fdfdfd;
+    border-bottom: 1px solid #d9e4eb;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    justify-content: space-between;
+    height: 50px;
+    display: flex;
+}
+
+.search-paciente {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+}
+
+.date-paciente {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 32px;
+}
+
+.contenedor-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    font-size: 25px;
+    color: #d9e4eb;
+    cursor: pointer;
+    transition: color .3s ease-in-out;
+    padding: 0 5px;
+}
+
+.nav-left:hover, .nav-right:hover {
+    color: #0176fe;
+}
+
+.date-picker {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 3px 10px;
+    height: 35px;
+}
+
+.date-picker:after {
+    content: '\f073';
+    margin-left: 10px;
+    font-family: FontAwesome;
+    font-size: 12px;
+    font-weight: 400;
+    color: #6f7d95;
+    cursor: pointer;
+    transition: color .3s ease-in-out;
+}
+
+.date-picker .form-control {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    color: transparent;
+    font-size: 0;
+    cursor: pointer;
+}
+
+.consulta-lista {
+    position: relative;
+    height: calc(100% - 25px);
+    margin: 0;
+    padding: 0 0 30px;
+    overflow-y: scroll;
+    background-color: #fff;
+}
+
+.empty-list-placeholder {
+    position: relative;
+    max-width: 70%;
+    margin: 5% auto 10%;
+    text-align: center;
+}
+
+.schedule-item {
+    display: flex;
+    height: 70px;
+    align-items: center;
+    border-bottom: 2px solid #ecf2f5;
+    font-size: 14px;
+    transition: background .3s ease-in-out;
+    cursor: pointer;
+}
+
+.schedule-item:hover {
+    background-color: #fdfdfd;
+}
+
+.schedule-number {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: inherit;
+    min-width: 50px;
+    font-size: 20px;
+    font-weight: 600;
+    border-right: 2px solid #ecf2f5;
+}
+
+.schedule-timeframe {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: inherit;
+    min-width: 80px;
+    border-right: 2px solid #ecf2f5;
+}
+
+.start-time {
+    font-weight: 600;
+}
+
+.end-time {
+    margin-top: 3px;
+    color: #7f95bb;
+    font-weight: 300;
+}
+
+.schedule-consultation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: inherit;
+    padding: 0 15px;
+}
+
+.name {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.label {
+    padding: 2px 15px;
+    border-radius: 20px;
+    background-color: rgba(1,118,254,.25);
+    text-transform: uppercase;
+    color: #0176fe;
+    font-weight: 400;
+    font-size: 100%;
+}
+
+.name .label {
+    margin-left: 10px;
+}
+
+.info {
+    margin-top: 3px;
+    color: #7f95bb;
+    font-weight: 300;
+}
+
+.info span {
+    margin-right: 20px;
+}
+
+.schedule-state {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: inherit;
+    min-width: 20px;    
+    border-right: 2px solid #ecf2f5;    
+}
+
+.state {
+    padding: 0 10px;
+    font-size: 20px;    
+}
+
+.state-success {
+    background-color: #26c6da;
+}
+
+.state-warning {
+    background-color: #ffb22b;
+}
+
+.state-danger {
+    background-color: #fc4b6c;
+}

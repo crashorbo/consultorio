@@ -1,0 +1,87 @@
+{% extends 'base2.html' %}
+
+{% load static %}
+
+{% block css %}
+  <!-- Date picker plugins css -->
+  <link href="{% static "assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css" %}" rel="stylesheet" type="text/css" />
+  <link href="{% static "assets/plugins/vanillajs-datepicker/datepicker-bs4.css" %}" rel="stylesheet" />
+  <link href={% static 'assets/paginas/reportes/index.css' %} rel="stylesheet" />
+{% endblock %}
+
+{% block contenido %} 
+  <ul class="tabs-navigation tabs-reports">
+    <li class="tab-link background">
+      <a href={% url 'reporte-index' %}>Mis Métricas</a>
+    </li>
+    <li class="tab-link background">
+      <a href={% url 'reporte-particulares' %}>Reporte Particulares</a>
+    </li>
+    <li class="tab-link background">
+      <a href={% url 'reporte-seguros' %} class="active">Reporte Seguros</a>
+    </li>
+  </ul>
+  <hr class="division">
+  <div class="addon-dashboard">
+    <div class="dashboard-header">
+      <div class="heading">
+        <h3 class="title">
+          <strong>Reporte Seguros: </strong>
+        </h3>
+      </div>
+    </div>
+    <div class="sheet-body">
+        <div class="body-section"><button class="btn btn-principal">GENERAR REPORTE</button></div>
+        <div class="body-section">
+            <label>Ver reportes del seguro</label>
+            <select name="" >
+              <option value="1">valor 1</option>
+            </select>
+            <label>De</label>
+            <input class="date" type="text">            
+            <label>a</label>
+            <input class="date" type="text">
+        </div>
+    </div>
+    <div class="report-container">
+        <div class="light-table">
+            <div class="app-light-table">
+              <div class="lt-head-wrap">
+                <table>
+                  <thead class="lt-head">
+                    <tr>
+                      <th class="lt-column align-left is-hideable is-sortable">
+                        #
+                      </th>
+                      <th class="lt-column align-center is-hideable is-sortable">
+                        Fecha Inicio
+                      </th>
+                      <th class="lt-column align-center is-hideable is-sortable">
+                        Fecha Fin
+                      </th>
+                      <th class="lt-column align-center is-hideable is-sortable">
+                        Total
+                      </th>
+                      <th class="lt-column align-center is-hideable is-sortable">
+                        Acciones
+                      </th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+{% endblock %}
+
+
+
+{% block js %}
+  <script src="{% static "assets/plugins/vanillajs-datepicker/datepicker-full.js" %}"></script>
+  <script src="{% static "assets/plugins/vanillajs-datepicker/locales/es.js" %}"></script>
+  <script src="{% static "assets/plugins/moment/moment.js" %}"></script>
+  <script src="{% static "assets/plugins/moment/min/locales.js" %}"></script>
+  <script src="{% static "assets/paginas/reportes/index.js" %}"></script>
+{% endblock %}

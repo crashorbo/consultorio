@@ -1,61 +1,31 @@
-<table class="table table-hover table-sm" id="myTable">
-  <thead>
-    <tr>
-      <th>HORA</th>
-      <th>PACIENTE</th>
-      <th>PROCEDENCIA</th>
-      <th>ESTADO</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for consulta in consultas %}
-        <tr id="{{consulta.id}}" onclick=direccionar(this)>
-          <td>{{ consulta.hora_inicio }}</td>
-          <td>{{ consulta.paciente.nombres|add:" "|add:consulta.paciente.apellidos }}</td>
-          <td>{{ consulta.procedencia }}</td>
-          <td>
-            {% if consulta.estado %}
-              <div class="label label-table label-success">Atendido</div>
-            {% else %}
-              <div class="label label-table label-danger">Espera</div>
-            {% endif %}
-          </td>
-        </tr>
-        
-    {% endfor %}  
-  </tbody>
-</table>
-<script>
-  $(function(){
-    $('#myTable').DataTable({
-      "language": {
-        "sProcessing":     "Procesando...",
-        "sLengthMenu":     "Mostrar _MENU_ registros",
-        "sZeroRecords":    "No se encontraron resultados",
-        "sEmptyTable":     "Ningún dato disponible en esta tabla",
-        "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-        "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-        "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-        "sInfoPostFix":    "",
-        "sSearch":         "Buscar:",
-        "sUrl":            "",
-        "sInfoThousands":  ",",
-        "sLoadingRecords": "Cargando...",
-        "oPaginate": {
-          "sFirst":    "Primero",
-          "sLast":     "Último",
-          "sNext":     "Siguiente",
-          "sPrevious": "Anterior"
-        },
-        "oAria": {
-          "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-        }
-      }
-    });
-  })
-  function direccionar(el){
-    var $thisId = $(el).attr('id');
-    window.location.href = '/agenda/consulta/'+$thisId;
-  }
-</script>
+{% load static %}
+
+{% load paciente_tags %}
+
+{% if consultas.count > 0 %}
+  {% for consulta in consultas %}    
+    <div class="schedule-item" data-url={% url 'agenda-editar' pk=consulta.id %}>
+      <div class="schedule-state {% if consulta.estado %} state-success {% else %} state-danger {% endif %}"></div>
+      <div class="schedule-number">{{ forloop.counter }}</div>
+      <div class="schedule-timeframe">
+        <div class="start-time">{{ consulta.hora_inicio }}</div>
+        <div class="end-time">{{ consulta.hora_fin }}</div>
+      </div>
+      <div class="schedule-consultation">
+        <div class="name">
+          {{ consulta.paciente.nombres|add:" "|add:consulta.paciente.apellidos }}
+          <span class="label">{{ consulta.procedencia }}</span>
+        </div>
+        <div class="info">
+          <span>{{ consulta.paciente.fecha_nacimiento }}</span>
+          <span>{{ consulta.paciente.fecha_nacimiento|edad }}</span>
+          <span>{{ consulta.paciente.ocupacion }}</span>
+        </div>    
+      </div>      
+    </div>
+  {% endfor %}    
+{% else %}
+  <div class="empty-list-placeholder">
+    
+  </div>
+{% endif %}

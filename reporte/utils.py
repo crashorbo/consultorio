@@ -14,9 +14,8 @@ from reportlab.graphics import renderPDF
 from reportlab.lib.utils import ImageReader
 from io import BytesIO
 
-from .models import Reporteseguro
+from .models import RpteSeguro
 from agenda.models import Agendaserv
-from .models import Reporteseguro
 from .templatetags import reporte_tag
 
 

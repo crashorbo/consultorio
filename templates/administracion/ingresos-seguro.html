@@ -1,0 +1,140 @@
+{% extends 'base2.html' %}
+
+{% load static %}
+
+{% load administracion_tags %}
+
+{% block css %}
+  <!-- Date picker plugins css -->
+  <link href="{% static "assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css" %}" rel="stylesheet" type="text/css" />
+  <link href="{% static "assets/plugins/vanillajs-datepicker/datepicker-bs4.css" %}" rel="stylesheet" />
+  <link href={% static 'assets/paginas/administracion/ingresos.css' %} rel="stylesheet" />
+{% endblock %}
+
+{% block contenido %} 
+  <ul class="tabs-navigation tabs-reports">    
+    <li class="tab-link background">
+      <a href={% url 'ingresos-particular' %}>Ingresos Particular</a>
+    </li>
+    <li class="tab-link background">
+      <a href={% url 'ingresos-seguro' %} class="active">Ingresos Seguro</a>
+    </li>
+  </ul>
+  <hr class="division">
+  <div class="addon-dashboard">
+    <div class="dashboard-header">
+      <div class="heading">
+        <div class="ingreso-text">
+          <h3 class="title">          
+            <strong>Ingreso Seguro: </strong><em></em>            
+          </h3>  
+        </div>
+        <div class="total-text">
+          <h3 class="title right">
+          <strong>Total: </strong><em id="display-total">0</em>
+        </h3>
+        </div>
+      </div>
+    </div>
+    <div class="sheet-body">
+        <div class="body-section"><button id="generar-reporte" class="btn btn-principal" data-url={% url 'ingresos-seguro-create' %}>GENERAR REPORTE</button></div>
+        <div class="body-section">
+            <label>Ver reportes del seguro</label>
+            <select id="filtro-seguro" name="filtro-seguro" >
+              {% for seguro in seguros %}
+                <option value="{{ seguro.id }}">{{ seguro.nombre }}</option>
+              {% endfor %}
+            </select>
+            <label>De</label>
+            <input id="ingreso-fecha-inicio" class="date" type="text">
+            <label>a</label>
+            <input id="ingreso-fecha-fin" class="date" type="text">
+        </div>
+    </div>
+    <div class="report-container">
+        <div class="light-table">
+            <div class="app-light-table">
+              <div class="lt-head-wrap">
+                <table>
+                  <thead class="lt-head">
+                    <tr>
+                      <th class="lt-column align-left is-hideable is-sortable" style="width: 30px">
+                        #
+                      </th>
+                      <th class="lt-column align-center is-hideable is-sortable">
+                        Fecha Inicio
+                      </th>
+                      <th class="lt-column align-center is-hideable is-sortable">
+                        Fecha Fin
+                      </th>
+                      <th class="lt-column align-center is-hideable is-sortable">
+                        Seguro
+                      </th>
+                      <th class="lt-column align-center is-hideable is-sortable">
+                        Total
+                      </th>
+                      <th class="lt-column align-center is-hideable is-sortable">
+                        Fecha Deposito
+                      </th>                      
+                      <th class="lt-column align-center is-hideable is-sortable" style="width: 100px">
+                        Acciones
+                      </th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <div class="lt-body-wrap">
+                <div class="lt-scrollable tse-scrollable vertical-collection">
+                  <div class="lt-inline lt-head"></div>
+                  <table>
+                    <tbody id="tabla-seguros" class="lt-body">                      
+                      {% if ingresos|length > 0 %}
+                        {% for ingreso in ingresos %}
+                          <tr class="lt-row infinite-item">
+                            <td class="lt-cell align-center" style="width: 30px">{{ forloop.counter|contador:ingresos.number }}</td>
+                            <td class="lt-cell align-center">{{ ingreso.fecha_inicio|date:"d/m/Y" }}</td>
+                            <td class="lt-cell align-center">{{ ingreso.fecha_fin|date:"d/m/Y" }}</td>
+                            <td class="lt-cell align-right">{{ ingreso.seguro.nombre }}</td>
+                            <td class="lt-cell align-right">{{ ingreso.total }}</td>
+                            <td class="lt-cell align-center">{% if ingreso.fecha_deposito %}{{ ingreso.fecha_deposito|date:"d/m/Y" }}{% endif %}</td>
+                            <td class="lt-cell align-right" style="width: 100px">
+                              {% if ingreso.photo %}<a href="{{ ingreso.photo.url }}" target="_blank"><i class="fa fa-file-image-o"></i></a>{% endif %}
+                              <a href="{% url 'ingresos-seguro-reporte' pk=ingreso.id %}" target="_blank"><i class="fa fa-file-pdf-o"></i></a>
+                              <a class="m-l-5" href="{% url 'ingresos-seguro-deposito' pk=ingreso.id %}"><i class="fa fa-upload"></i></a>
+                            </td>
+                          </tr>                          
+                        {% endfor %}
+                        <div class="paginador col-md-12">                          
+                          <span>
+                            {% if ingresos.has_next %}
+                              <a class="infinite-more-link" href="?page={{ ingresos.next_page_number }}">next</a>                              
+                            {% endif %}
+                          </span>
+                        </div>
+                      {% else %}
+                      <tr class="lt-row lt-no-data">
+                        <td>No hay consultas.</td>
+                      </tr>
+                      {% endif %}                      
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+{% endblock %}
+
+
+
+{% block js %}
+  <script src="{% static "assets/plugins/infinite-scroll/jquery.waypoints.min.js" %}"></script>
+  <script src="{% static "assets/plugins/infinite-scroll/infinite.min.js" %}"></script>
+  <script src="{% static "assets/plugins/vanillajs-datepicker/datepicker-full.js" %}"></script>
+  <script src="{% static "assets/plugins/vanillajs-datepicker/locales/es.js" %}"></script>
+  <script src="{% static "assets/plugins/moment/moment.js" %}"></script>
+  <script src="{% static "assets/plugins/moment/min/locales.js" %}"></script>
+  <script src="{% static "assets/paginas/administracion/ingresos-seguro.js" %}"></script>
+{% endblock %}

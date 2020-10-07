@@ -141,6 +141,15 @@ class AgendaAjaxRegistrar(CreateView):
         movimiento.ingreso = valor
         movimiento.save()
 
+
+def agenda_ajax_list(request):
+    if request.method == 'POST':        
+        fecha = request.POST.get('fecha', '')
+        q = Agenda.objects.filter(fecha=fecha).order_by('hora_inicio')
+        return render(request, 'agenda/ajax/listaconsultas.html', {'consultas': q})
+    return HttpResponse('No Ingresa')
+
+
 class AgendaAjaxLista(View):
     def get(self, *args, **kwargs):
         qs = Agenda.objects.filter(fecha__range=(self.request.GET['start'], self.request.GET['end']), deleted=False)

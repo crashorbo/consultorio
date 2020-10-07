@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'configuracion.apps.ConfiguracionConfig',
     'medicamento.apps.MedicamentoConfig',
     'reporte.apps.ReporteConfig',
+    'administracion.apps.AdministracionConfig',
 ]
 
 MIDDLEWARE = [

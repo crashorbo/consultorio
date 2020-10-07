@@ -5,7 +5,7 @@ from .views import IndexView, PacienteAutocomplete, AgendaRegistrar, AgendaAjaxE
     AgendaEditar, DiagnosticoCrear, DiagnosticoEliminar, TratamientoCrear, TratamientoEliminar, AgendaAjaxDelete, \
     AgendaAjaxEspera, Reportemov, AgendaservUpdate, Reporterec, AgendaFechaListar, HistoriaListar, HistoriaVer, \
     AgendaAjaxRegistrar, RecetaCrear, RecetaEliminar, ReporteRecmed, Reportemovfecha, ControlView, ReconsultaCrear, \
-    ReconsultaEliminar, AgendaServicioCrear, HistoriamListar, ReporteRecsegurob
+    ReconsultaEliminar, AgendaServicioCrear, HistoriamListar, ReporteRecsegurob, agenda_ajax_list
 
 
 urlpatterns = [
@@ -15,6 +15,7 @@ urlpatterns = [
     path('registrar', login_required(AgendaRegistrar.as_view()), name='agenda-registrar'),
     path('registrar-ajax', login_required(AgendaAjaxRegistrar.as_view()), name='agenda-ajax-registrar'),
     path('ajax-lista', login_required(AgendaAjaxLista.as_view()), name='agenda-ajax-lista'),
+    path('new-ajax-lista', login_required(agenda_ajax_list), name='new-agenda-ajax-lista'),
     path('listar', login_required(AgendaListar.as_view()), name='agenda-listar'),
     path('movimiento/reportmov', login_required(Reportemov.as_view()), name='reportemov'), 
     url(r'^movimiento/reportemovfecha/(?P<date>\d{2}-\d{2}-\d{4})/$', login_required(Reportemovfecha.as_view()), name='reportemovfecha'),

@@ -2,80 +2,44 @@
 
 {% load static %}
 
-{% block contenido %}
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="card">
-        <div class="row">
-          <div class="col-xlg-2 col-lg-3 col-md-3">
-            <div class="card-body inbox-panel">
-              <img alt="" src="{% static "assets/images/logoiso.png" %}" class="img-fluid p-30"/>
-              <h3 class="text-center">REPORTE</h3>
-              <ul class="list-group list-group-full">
-                <li class="list-group-item active">
-                  <a id="general" href="javascript:void(0)" class="d-block"> General </a>
-                </li>
-                <li class="list-group-item">
-                  <a id="seguro" href="javascript:void(0)" class="d-block"> Seguro </a>
-                </li>
-              </ul>
-              <div class="row p-t-20">
-                  <div class="col-md-12">
-                      <a href="{% url 'index' %}" class="btn btn-warning d-block">Atras</a>
-                  </div>
-              </div>
-            </div>
-          </div>
-          <div id="cuerpo-principal" class="col-xlg-10 col-lg-9 col-md-9">
-          </div>
-        </div>
+{% block css %}
+  <!-- Date picker plugins css -->
+  <link href="{% static "assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css" %}" rel="stylesheet" type="text/css" />
+  <link href="{% static "assets/plugins/vanillajs-datepicker/datepicker-bs4.css" %}" rel="stylesheet" />
+  <link href={% static 'assets/paginas/reportes/index.css' %} rel="stylesheet" />
+{% endblock %}
+
+{% block contenido %} 
+  <ul class="tabs-navigation tabs-reports">
+    <li class="tab-link background">
+      <a href={% url 'reporte-index' %} class="active">Mis Métricas</a>
+    </li>
+    <li class="tab-link background">
+      <a href={% url 'reporte-particulares' %}>Reporte Particulares</a>
+    </li>
+    <li class="tab-link background">
+      <a href={% url 'reporte-seguros' %}>Reporte Seguros</a>
+    </li>
+  </ul>
+  <hr class="division">
+  <div class="addon-dashboard">
+    <div class="dashboard-header">
+      <div class="heading">
+        <h3 class="title">
+          <strong>Metricas</strong>
+        </h3>
       </div>
     </div>
   </div>
+  
 {% endblock %}
 
+
+
 {% block js %}
-  <script>
-    $(function () {
-      // elementos de la lista
-      var menues = $("ul li");
-
-      $(menues[0]).addClass("active");
-      // manejador de click sobre todos los elementos
-      menues.click(function () {
-        // eliminamos active de todos los elementos
-        menues.removeClass("active");
-        // activamos el elemento clicado.
-        $(this).addClass("active");
-      });
-
-      $.ajax({
-        url: "general",
-        type: 'get',
-        success: function (data) {
-          $("#cuerpo-principal").html(data);
-        }
-      });
-    });
-    $("#general").on("click", function (e) {
-      e.preventDefault();
-      $.ajax({
-        url: "general",
-        type: 'get',
-        success: function (data) {
-          $("#cuerpo-principal").html(data);
-        }
-      });
-    });
-    $("#seguro").on("click", function (e) {
-      e.preventDefault();
-      $.ajax({
-        url: "seguro",
-        type: 'get',
-        success: function (data) {
-          $("#cuerpo-principal").html(data);
-        }
-      });
-    });
-  </script>
+  <script src="{% static "assets/plugins/vanillajs-datepicker/datepicker-full.js" %}"></script>
+  <script src="{% static "assets/plugins/vanillajs-datepicker/locales/es.js" %}"></script>
+  <script src="{% static "assets/plugins/moment/moment.js" %}"></script>
+  <script src="{% static "assets/plugins/moment/min/locales.js" %}"></script>
+  <script src="{% static "assets/paginas/reportes/index.js" %}"></script>
 {% endblock %}

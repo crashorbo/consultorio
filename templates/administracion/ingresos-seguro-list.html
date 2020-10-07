@@ -1,0 +1,24 @@
+{% if ingresos|length > 0 %}
+    {% for ingreso in ingresos %}
+        <tr class="lt-row infinite-item">
+        <td class="lt-cell align-center" style="width: 30px">{{ forloop.counter }}</td>
+        <td class="lt-cell align-center">{{ ingreso.fecha_inicio|date:"d/m/Y" }}</td>
+        <td class="lt-cell align-center">{{ ingreso.fecha_fin|date:"d/m/Y" }}</td>
+        <td class="lt-cell align-right">{{ ingreso.seguro.nombre }}</td>
+        <td class="lt-cell align-right">{{ ingreso.total }}</td>
+        <td class="lt-cell align-center">{% if ingreso.fecha_deposito %}{{ ingreso.fecha_deposito|date:"d/m/Y" }}{% endif %}</td>
+        <td class="lt-cell align-right" style="width: 100px">
+            {% if ingreso.photo %}<a href="{{ ingreso.photo.url }}" target="_blank"><i class="fa fa-file-image-o"></i></a>{% endif %}
+            <a href="{% url 'ingresos-seguro-reporte' pk=ingreso.id %}" target="_blank"><i class="fa fa-file-pdf-o"></i></a>
+            <a class="m-l-5" href="{% url 'ingresos-seguro-deposito' pk=ingreso.id %}"><i class="fa fa-upload"></i></a>
+        </td>
+        </tr>                          
+    {% endfor %}
+{% else %}
+    <tr class="lt-row lt-no-data">
+        <td>No hay resultados.</td>
+    </tr>
+{% endif %}
+<div style="display: none;">
+    <input id="suma-total" type="text" value="{{ total }}">
+</div>

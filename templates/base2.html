@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
@@ -21,13 +21,13 @@
     <!-- Bootstrap Core CSS -->
     <link href="{% static "assets/plugins/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
     <!-- toast CSS -->
-    <link href="{% static "assets/plugins/toast-master/css/jquery.toast.css" %}" rel="stylesheet">
-    <!-- Estilo de componentes -->
-    {% block css %}{% endblock %}
+    <link href="{% static "assets/plugins/toast-master/css/jquery.toast.css" %}" rel="stylesheet">    
     <!-- Custom CSS -->
     <link href="{% static "css/style.css" %}" rel="stylesheet">
     <!-- You can change the theme colors from here -->
     <link href="{% static "css/colors/blue.css" %}" id="theme" rel="stylesheet">
+    <!-- Estilo de componentes -->
+    {% block css %}{% endblock %}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -44,81 +44,86 @@
         <svg class="circular" viewBox="25 25 50 50">
             <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
     </div>
+    <nav class="sidebar-left">
+        <div class="nav-item sidebar-left-logo">
+            <a href="">
+                <img src={% static 'assets/images/logoiso.png'%} class="img-fluid" alt="">
+            </a>
+        </div> 
+        <div class="nav-item">
+            <a href="{% url "paciente-index" %}" class="active" data-placement="right" data-toggle="tooltip" title="Paciente"><i class="fa fa-sidebar fa-user-circle"></i></a>
+        </div>            
+        <div class="nav-item">
+            <a href="{% url "agenda-index" %}" data-placement="right" data-toggle="tooltip" title="Agenda"><i class="fa fa-sidebar fa-calendar"></i></a>
+        </div>
+        <div class="nav-item">
+            <a href="{% url "agenda-listar" %}" data-placement="right" data-toggle="tooltip" title="Consulta"><i class="fa-sidebar icon-doctor"></i></a>
+        </div>            
+        <div class="nav-item">
+            <a href="{% url "reporte-index" %}" data-placement="right" data-toggle="tooltip" title="Reportes"><i class="fa fa-sidebar fa-clipboard"></i></a>
+        </div>
+        <div class="nav-item">
+            <a href={% url 'ingresos-particular'%} data-placement="right" data-toggle="tooltip" title="Administracion"><i class="fa fa-sidebar fa-bank"></i></a>
+        </div>                    
+        <div class="nav-item">
+            <a href="{% url "configuracion" %}" data-placement="right" data-toggle="tooltip" title="Configuracion"><i class="fa fa-sidebar fa-gear"></i></a>
+        </div>            
+        <div class="nav-item logout-item">
+            <a href={% url 'logout' %} data-placement="right" data-toggle="tooltip" title="Cerrar Sesion"><i class="fa fa-sidebar fa-power-off"></i></a>
+        </div>
+    </nav>
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
-    <div id="main-wrapper">
-        
+    <div id="main-wrapper">              
+        {% block contenido %}{% endblock %}
         <!-- ============================================================== -->
-        <!-- Page wrapper  -->
+        <!-- Right sidebar -->
         <!-- ============================================================== -->
-        <div class="page-wrapper">
-            <!-- ============================================================== -->
-            <!-- Container fluid  -->
-            <!-- ============================================================== -->
-            <div class="container-fluid">
-                {% block contenido %}{% endblock %}
-                <!-- ============================================================== -->
-                <!-- Right sidebar -->
-                <!-- ============================================================== -->
-                <!-- .right-sidebar -->
-                <div class="right-sidebar">
-                    <div class="slimscrollright">
-                        <div class="rpanel-title"> Pacientes en Espera <span><i class="ti-close right-side-toggle"></i></span> </div>
-                        <div class="r-panel-body">                            
-                            <ul class="m-t-5 chatonline">                                
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- ============================================================== -->
-                <!-- End Right sidebar -->
-                <!-- ============================================================== -->
-            </div>
-            <!-- Modal -->
-            <div id="responsive-modal" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow:hidden;">
-                <div class="modal-dialog">
-                    <div id="contenido-modal" class="modal-content">
-                        {% block modal-content %}{% endblock %}
-                    </div>
+        <!-- .right-sidebar -->
+        <div class="right-sidebar">
+            <div class="slimscrollright">
+                <div class="rpanel-title"> Pacientes en Espera <span><i class="ti-close right-side-toggle"></i></span> </div>
+                <div class="r-panel-body">                            
+                    <ul class="m-t-5 chatonline">                                
+                    </ul>
                 </div>
             </div>
-            
-            <div class="modal fade" id="mensaje-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div id="msj-modal" class="modal-content">
-                        
-                    </div>
-                </div>
-            </div>
-            <!-- /.modal -->
-
-            <div id="lmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content" id="lmcontenido">
-                        
-                    </div>
-                    <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-            </div>
-            <!-- /.modal -->
-            <!-- ============================================================== -->
-            <!-- End Container fluid  -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-            <footer class="footer">
-                © <span id="ano"></span> Wilder Alexander Calani Apaza, <strong>Telefono: </strong>77145554
-            </footer>
-            <!-- ============================================================== -->
-            <!-- End footer -->
-            <!-- ============================================================== -->
         </div>
         <!-- ============================================================== -->
-        <!-- End Page wrapper  -->
+        <!-- End Right sidebar -->
+        <!-- ============================================================== -->        
+        <!-- Modal -->
+        <div id="responsive-modal" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow:hidden;">
+            <div class="modal-dialog">
+                <div id="contenido-modal" class="modal-content">
+                    {% block modal-content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="mensaje-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div id="msj-modal" class="modal-content">
+                    
+                </div>
+            </div>
+        </div>
+        <!-- /.modal -->
+
+        <div id="lmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content" id="lmcontenido">
+                    
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
         <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->        
     </div>
     <!-- ============================================================== -->
     <!-- End Wrapper -->
