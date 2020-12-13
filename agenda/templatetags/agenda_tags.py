@@ -1,4 +1,7 @@
 from django import template
+import re
+from django.urls import reverse, NoReverseMatch
+
 from datetime import date
 from dateutil import relativedelta
 from django.contrib.auth.models import Group
@@ -18,6 +21,17 @@ def ctipo(value):
 def has_group(user, group_name):
     group = Group.objects.get(name=group_name)
     return True if group in user.groups.all() else False
+
+@register.simple_tag(takes_context=True)
+def active(context, pattern_or_urlname):
+    try:
+        pattern = '^' + reverse(pattern_or_urlname)
+    except NoReverseMatch:
+        pattern = pattern_or_urlname
+    path = context['request'].path
+    if re.search(pattern, path):
+        return 'active'
+    return ''
 
 @register.filter(name='servicio')
 def servicio(values):

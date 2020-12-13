@@ -1,3 +1,6 @@
+const imprimir = document.querySelector("#imprimir");
+const elem = document.querySelector("#id_fecha");
+
 $(document).ready(function(){
 
   var calendar = $('#calendar').fullCalendar({
@@ -5,6 +8,7 @@ $(document).ready(function(){
     slotDuration: '00:15',
     minTime: '08:00:00',
     maxTime: '22:00:00',
+    height: 700,
     header: {
       left: 'prev,next today',
       center: 'title',
@@ -201,12 +205,12 @@ window.recalculo = function (){
   })
 };
 
-function imprimirlista(e, obj)
-{
-  e.preventDefault();
-  this_url = $(obj).attr('href');
-  window.open(this_url,"reporte","height=700,width=700,status=no, toolbar=no,menubar=no,location=no,scrollbars=yes");
-}
+imprimir.addEventListener('click', e => {
+  e.preventDefault();    
+  const fecha = elem.value.split("/").join("-");  
+  this_url = '/agenda/movimiento/reportemovfecha/'+fecha;  
+  printJS(this_url);
+})
 
 $("#controlagenda").on('click', function(e){
   e.preventDefault();

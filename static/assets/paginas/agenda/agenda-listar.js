@@ -56,6 +56,6 @@ listaConsulta.addEventListener("click", e => {
 // imprimir reporte por fecha
 imprimir.addEventListener('click', e => {
   fecha = moment(elem.value).format('DD-MM-YYYY');
-  this_url = '/agenda/movimiento/reportemovfecha/'+fecha;
-  window.open(this_url,"reporte","height=600,width=700,status=no, toolbar=no,menubar=no,location=no,scrollbars=yes");
+  this_url = '/agenda/movimiento/reportemovfecha/'+fecha;  
+  printJS(this_url);
 })

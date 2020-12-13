@@ -70,7 +70,7 @@ generarReporte.addEventListener("click", e => {
 });
 
 waypointContainer.addEventListener("click", e => {    
-    if (e.target.parentNode.tagName.toLowerCase() === 'a' && !(e.target.parentNode.getAttribute("target") === '_blank')){
+    if (e.target.classList.contains('fa-upload')){
         e.preventDefault();
         const url = e.target.parentNode.getAttribute("href");
         fetch(url)
@@ -108,7 +108,12 @@ waypointContainer.addEventListener("click", e => {
                 .then(text => window.location.reload())      
             })
         })
-    }        
+    }
+    if (e.target.classList.contains('fa-file-pdf-o')) {
+        e.preventDefault();        
+        this_url = e.target.parentNode.getAttribute('href')
+        printJS(this_url);
+    }
 });
 
 const filtroFechas = () => {    

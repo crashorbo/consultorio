@@ -2,6 +2,12 @@
 
 {% load paciente_tags %}
 
+<div class="contenedor-header">
+    <div>Total Citas: {{ detalle.total_citas }}, Citas Particular: {{ detalle.citas_particular }}, Citas Seguro: {{ detalle.citas_seguro }}</div>
+    <div></div>
+    <div>Total Particular: {{ detalle.total_particular }} Bs. Total Seguro: {{ detalle.total_seguro }}</div>    
+</div>
+<ul class="consulta-lista">
 {% if consultas.count > 0 %}
   {% for consulta in consultas %}    
     <div class="schedule-item" data-url={% url 'agenda-editar' pk=consulta.id %}>
@@ -22,10 +28,22 @@
           <span>{{ consulta.paciente.ocupacion }}</span>
         </div>    
       </div>      
+      <div class="schedule-actions">
+        {% with servicio=consulta.agendaserv_set.all.first %}
+        <div class="name">
+          <span>{{ servicio.servicio.nombre }}</span>
+        </div>
+        <div class="info-costo">          
+          <span>{{ servicio.costo }} Bs.</span>
+        </div>
+        {% endwith %}
+      </div>
     </div>
   {% endfor %}    
 {% else %}
-  <div class="empty-list-placeholder">
-    
+  <div class="empty-list-placeholder agenda">
+    <img src={% static 'assets/images/agenda-placeholder.png' %} alt="">
+    <div class="header">!Agenda una cita para tu paciente!</div>
   </div>
+</ul>
 {% endif %}

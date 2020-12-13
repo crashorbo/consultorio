@@ -5,7 +5,7 @@ from .views import IndexView, PacienteAutocomplete, AgendaRegistrar, AgendaAjaxE
     AgendaEditar, DiagnosticoCrear, DiagnosticoEliminar, TratamientoCrear, TratamientoEliminar, AgendaAjaxDelete, \
     AgendaAjaxEspera, Reportemov, AgendaservUpdate, Reporterec, AgendaFechaListar, HistoriaListar, HistoriaVer, \
     AgendaAjaxRegistrar, RecetaCrear, RecetaEliminar, ReporteRecmed, Reportemovfecha, ControlView, ReconsultaCrear, \
-    ReconsultaEliminar, AgendaServicioCrear, HistoriamListar, ReporteRecsegurob, agenda_ajax_list
+    ReconsultaEliminar, AgendaServicioCrear, HistoriamListar, ReporteRecsegurob, agenda_ajax_list, ReportemovParticularfechas    
 
 
 urlpatterns = [
@@ -19,6 +19,7 @@ urlpatterns = [
     path('listar', login_required(AgendaListar.as_view()), name='agenda-listar'),
     path('movimiento/reportmov', login_required(Reportemov.as_view()), name='reportemov'), 
     url(r'^movimiento/reportemovfecha/(?P<date>\d{2}-\d{2}-\d{4})/$', login_required(Reportemovfecha.as_view()), name='reportemovfecha'),
+    url(r'^movimiento/reportemovpfechas/(?P<date1>\d{2}-\d{2}-\d{4})/(?P<date2>\d{2}-\d{2}-\d{4})/$', login_required(ReportemovParticularfechas.as_view()), name='reportemovparticularfechas'),    
     path('reporte-receta/<pk>',login_required(Reporterec.as_view()), name='reporterec'),
     path('reporte-receta-oftal/<pk>',login_required(ReporteRecmed.as_view()), name='reportereceta'),    
     path('reporte-receta-segurob/<pk>',login_required(ReporteRecsegurob.as_view()), name='reporterecetasegurob'),

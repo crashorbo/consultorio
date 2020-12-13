@@ -22,6 +22,7 @@ from paciente.forms import PacienteForm
 from .models import Agenda, Diagnostico, Tratamiento, Agendaserv, Receta, Reconsulta, Agendaserv
 from .forms import AgendaForm, DiagnosticoForm, TratamientoForm, ServicioFormset, RecetaForm, ReconsultaForm, AgendaservicioForm
 
+from django.db.models import Sum
 from io import BytesIO
 from decimal import Decimal, getcontext
 from django.utils import formats
@@ -144,9 +145,18 @@ class AgendaAjaxRegistrar(CreateView):
 
 def agenda_ajax_list(request):
     if request.method == 'POST':        
-        fecha = request.POST.get('fecha', '')
-        q = Agenda.objects.filter(fecha=fecha).order_by('hora_inicio')
-        return render(request, 'agenda/ajax/listaconsultas.html', {'consultas': q})
+        fecha = request.POST.get('fecha', '')                
+        citas = Agenda.objects.filter(fecha=fecha, deleted=False).order_by('hora_inicio')
+        total_particular = Agendaserv.objects.filter(fecha=fecha, agenda__tipo=0).aggregate(Sum('costo'))['costo__sum'] or 0.00
+        total_seguro = Agendaserv.objects.filter(fecha=fecha, agenda__tipo=1).aggregate(Sum('costo'))['costo__sum'] or 0.00
+        detalle = {
+            'total_particular': total_particular,
+            'total_seguro': total_seguro,
+            'total_citas': citas.count(),
+            'citas_particular': citas.filter(tipo=0).count(),
+            'citas_seguro': citas.filter(tipo=1).count()
+        }
+        return render(request, 'agenda/ajax/listaconsultas.html', {'consultas': citas, 'detalle': detalle})
     return HttpResponse('No Ingresa')
 
 
@@ -719,11 +729,14 @@ class Reportemovfecha(View):
         total_particular_costo = 0
         total_particular_cobrado = 0
         total_asegurado_costo = 0
+        total_particulares = 0
+        total_asegurados = 0
         movimiento.append(header)
         movimiento.append(subparticular)
         items = Agendaserv.objects.filter(fecha=datetime.strptime(fecha, "%d-%m-%Y"), agenda__deleted=False)
         for item in items:
             if not item.agenda.tipo:
+                total_particulares = total_particulares + 1
                 if item.estado:
                     aux = item.costo
                     total_particular_cobrado = total_particular_cobrado + item.costo
@@ -731,42 +744,45 @@ class Reportemovfecha(View):
                     aux = Decimal('0.00')
                 if item.descuento:
                     this_particular = [
+                        Paragraph(str(total_particulares), celda),
                         Paragraph((item.agenda.paciente.nombres + ' ' + item.agenda.paciente.apellidos), celdaremarcada),
                         Paragraph(item.servicio.nombre, celdaremarcada), Paragraph(str(item.costo), celdaremarcadader),
-                        Paragraph(str(aux), celdaremarcadader)
                     ]
                 else:
                     this_particular = [
+                        Paragraph(str(total_particulares), celda),
                         Paragraph((item.agenda.paciente.nombres + ' ' + item.agenda.paciente.apellidos), celda),
                         Paragraph(item.servicio.nombre, celda), Paragraph(str(item.costo), celdaderecha),
-                        Paragraph(str(aux), celdaderecha)
                     ]
                 particulares.append(this_particular)
                 total_particular_costo = total_particular_costo + item.costo
             else:
+                total_asegurados = total_asegurados + 1
                 if item.descuento:
                     this_asegurado = [
+                        Paragraph(str(total_asegurados), celda),
                         Paragraph((item.agenda.paciente.nombres+' '+item.agenda.paciente.apellidos), celdaremarcada),
-                        Paragraph(item.servicio.nombre, celdaremarcada), Paragraph(str(item.agenda.matricula), celdaremarcada),
-                        Paragraph(item.agenda.tipo_beneficiario, celdaremarcada), Paragraph(str(item.costo), celdaremarcadader)
+                        Paragraph(item.servicio.nombre, celdaremarcada), Paragraph(str(item.agenda.procedencia), celdaremarcada),
+                        Paragraph(str(item.costo), celdaremarcadader)
                     ]
                 else:
                     this_asegurado = [
+                        Paragraph(str(total_asegurados), celda),
                         Paragraph((item.agenda.paciente.nombres + ' ' + item.agenda.paciente.apellidos), celda),
-                        Paragraph(item.servicio.nombre, celda), Paragraph(str(item.agenda.matricula), celda),
-                        Paragraph(item.agenda.tipo_beneficiario, celda), Paragraph(str(item.costo), celdaderecha)
+                        Paragraph(item.servicio.nombre, celda), Paragraph(str(item.agenda.procedencia), celda),
+                        Paragraph(str(item.costo), celdaderecha)
                     ]
                 asegurados.append(this_asegurado)
                 total_asegurado_costo = total_asegurado_costo + item.costo
-        this_particular = [Paragraph('TOTAL', celdabold), Paragraph('', celda), Paragraph(str(total_particular_costo), celdaderechabold), Paragraph(str(total_particular_cobrado),celdaderechabold)]
+        this_particular = [Paragraph('', celda), Paragraph('TOTAL', celdabold), Paragraph('', celda), Paragraph(str(total_particular_costo), celdaderechabold)]
         particulares.append(this_particular)
-        this_asegurado = [Paragraph('TOTAL', celdabold), Paragraph('', celda), Paragraph('', celda), Paragraph('', celda), Paragraph(str(total_asegurado_costo),celdaderechabold)]
+        this_asegurado = [Paragraph('', celda), Paragraph('TOTAL', celdabold), Paragraph('', celda), Paragraph('', celda), Paragraph(str(total_asegurado_costo),celdaderechabold)]
         asegurados.append(this_asegurado)
         itemss = Agenda.objects.filter(fecha=datetime.strptime(fecha, "%d-%m-%Y"), control=True)
         for item in itemss:
             controles.append([Paragraph(item.paciente.nombres + ' ' + item.paciente.apellidos, celda), ])
-        headings = (Paragraph('Nombre', cabecera), Paragraph('Consulta', cabecera), Paragraph('Costo', cabecera), Paragraph('SubTotal',cabecera))
-        t1 = Table([headings] + particulares, colWidths=[10 * cm, 5 * cm, 2 * cm, 2 * cm])
+        headings = (Paragraph('Nro', cabecera), Paragraph('Nombre', cabecera), Paragraph('Detalle', cabecera), Paragraph('Costo', cabecera))
+        t1 = Table([headings] + particulares, colWidths=[1 * cm, 10 * cm, 6 * cm, 2 * cm])
         t1.setStyle(TableStyle(
         [
             ('GRID', (0, 0), (6, -1), 1, colors.black),
@@ -775,8 +791,8 @@ class Reportemovfecha(View):
         ]
         ))
 
-        headings = (Paragraph('Nombre', cabecera), Paragraph('Consulta', cabecera), Paragraph('matricula', cabecera), Paragraph('Procede', cabecera), Paragraph('Costo',cabecera))
-        t2 = Table([headings] + asegurados, colWidths=[8 * cm, 4 * cm, 3 * cm, 2 * cm, 2 * cm])
+        headings = (Paragraph('Nro', cabecera), Paragraph('Nombre', cabecera), Paragraph('Detalle', cabecera), Paragraph('Procedencia', cabecera), Paragraph('Costo',cabecera))
+        t2 = Table([headings] + asegurados, colWidths=[1 * cm, 7 * cm, 3 * cm, 6 * cm, 2 * cm])
         t2.setStyle(TableStyle(
         [
             ('GRID', (0, 0), (6, -1), 1, colors.black),
@@ -804,6 +820,143 @@ class Reportemovfecha(View):
         response.write(buff.getvalue())
         buff.close()
         return response
+
+class ReportemovParticularfechas(View):
+    def get(self, *args, **kwargs):
+        fecha1 = self.kwargs['date1']
+        fecha2 = self.kwargs['date2']
+        response = HttpResponse(content_type='application/pdf')
+        pdf_name = "mov_{}_{}.pdf".format(fecha1, fecha2)
+        response['Content-Disposition'] = 'inline; filename=%s' % pdf_name
+        buff = BytesIO()
+        doc = SimpleDocTemplate(buff,
+                                pagesize=portrait(letter),
+                                rightMargin=30,
+                                leftMargin=30,
+                                topMargin=30,
+                                bottomMargin=30,
+                                )
+
+        cabeza = ParagraphStyle(name="cabeza", alignment=TA_LEFT, fontSize=14, fontName="Times-Roman", textColor=colors.darkblue)
+        cabecera = ParagraphStyle(name="cabecera", alignment=TA_CENTER, fontSize=10, fontName="Times-Roman", textColor=colors.white)
+        celdaderecha = ParagraphStyle(name="celdaderecha",alignment=TA_RIGHT, fontsize=8, fontName="Times-Roman")
+        celdaderechabold = ParagraphStyle(name="celdaderecha",alignment=TA_RIGHT, fontsize=10, fontName="Times-Bold")
+        celda = ParagraphStyle(name="celda", alignment=TA_LEFT, fontsize=8, fontName="Times-Roman")
+        celdabold = ParagraphStyle(name="celda", alignment=TA_LEFT, fontsize=10, fontName="Times-Bold")
+        celdaverde = ParagraphStyle(name="celdaverde", alignment=TA_CENTER, fontSize=8, fontName="Times-Roman", textColor=colors.green)
+        celdaroja = ParagraphStyle(name="celdaroja", alignment=TA_CENTER, fontSize=8, fontName="Times-Roman", textColor=colors.red)
+        celdarojarem = ParagraphStyle(name="celdaroja", alignment=TA_CENTER, fontSize=8, fontName="Times-Roman", textColor=colors.red, backColor = colors.yellow)
+        celdaremarcada = ParagraphStyle(name="celda", alignment=TA_LEFT, fontsize=8, fontName="Times-Roman", backColor = colors.yellow)
+        celdaremarcadader = ParagraphStyle(name="celdader", alignment=TA_RIGHT, fontsize=8, fontName="Times-Roman",
+                                           backColor=colors.yellow)
+        styles = getSampleStyleSheet()
+        styles.add(ParagraphStyle(name='centered', alignment=TA_CENTER, fontSize=16))
+        styles.add(ParagraphStyle(name='subtitulo', alignment=TA_LEFT, fontSize=14))
+        header = Paragraph("Reporte Movimientos: {} - {}".format(fecha1.replace('-', '/'), fecha2.replace('-', '/')), styles['centered'])
+        subparticular = Paragraph("Particulares:", styles['Heading2'])
+        # subasegurados = Paragraph("Asegurados:", styles['Heading2'])
+        # subcontroles = Paragraph("Controles:", styles['Heading2'])
+        movimiento = []
+        particulares = []
+        asegurados = []
+        controles = []
+        total_particular_costo = 0
+        total_particular_cobrado = 0
+        total_asegurado_costo = 0
+        total_particulares = 0
+        total_asegurados = 0
+        movimiento.append(header)
+        movimiento.append(subparticular)
+        items = Agendaserv.objects.filter(fecha__range=(datetime.strptime(fecha1, "%d-%m-%Y"), datetime.strptime(fecha2, "%d-%m-%Y")), agenda__deleted=False).order_by('fecha')
+        for item in items:
+            if not item.agenda.tipo:
+                total_particulares = total_particulares + 1
+                if item.estado:
+                    aux = item.costo
+                    total_particular_cobrado = total_particular_cobrado + item.costo
+                else:
+                    aux = Decimal('0.00')
+                if item.descuento:
+                    this_particular = [
+                        Paragraph(str(total_particulares), celda),
+                        Paragraph(item.fecha.strftime('%d/%m/%Y'), celda),
+                        Paragraph((item.agenda.paciente.nombres + ' ' + item.agenda.paciente.apellidos), celdaremarcada),
+                        Paragraph(item.servicio.nombre, celdaremarcada), Paragraph(str(item.costo), celdaremarcadader),
+                    ]
+                else:
+                    this_particular = [
+                        Paragraph(str(total_particulares), celda),
+                        Paragraph(item.fecha.strftime('%d/%m/%Y'), celda),
+                        Paragraph((item.agenda.paciente.nombres + ' ' + item.agenda.paciente.apellidos), celda),
+                        Paragraph(item.servicio.nombre, celda), Paragraph(str(item.costo), celdaderecha),
+                    ]
+                particulares.append(this_particular)
+                total_particular_costo = total_particular_costo + item.costo
+            else:
+                total_asegurados = total_asegurados + 1
+                if item.descuento:
+                    this_asegurado = [
+                        Paragraph(str(total_asegurados), celda),
+                        Paragraph((item.agenda.paciente.nombres+' '+item.agenda.paciente.apellidos), celdaremarcada),
+                        Paragraph(item.servicio.nombre, celdaremarcada), Paragraph(str(item.agenda.procedencia), celdaremarcada),
+                        Paragraph(str(item.costo), celdaremarcadader)
+                    ]
+                else:
+                    this_asegurado = [
+                        Paragraph(str(total_asegurados), celda),
+                        Paragraph((item.agenda.paciente.nombres + ' ' + item.agenda.paciente.apellidos), celda),
+                        Paragraph(item.servicio.nombre, celda), Paragraph(str(item.agenda.procedencia), celda),
+                        Paragraph(str(item.costo), celdaderecha)
+                    ]
+                asegurados.append(this_asegurado)
+                total_asegurado_costo = total_asegurado_costo + item.costo
+        this_particular = [Paragraph('', celda), Paragraph('TOTAL', celdabold), Paragraph('', celda),Paragraph('', celda), Paragraph(str(total_particular_costo), celdaderechabold)]
+        particulares.append(this_particular)
+        this_asegurado = [Paragraph('', celda), Paragraph('TOTAL', celdabold), Paragraph('', celda), Paragraph('', celda), Paragraph(str(total_asegurado_costo),celdaderechabold)]
+        asegurados.append(this_asegurado)
+        itemss = Agenda.objects.filter(fecha__range=(datetime.strptime(fecha1, "%d-%m-%Y"), datetime.strptime(fecha2, "%d-%m-%Y")), control=True)
+        for item in itemss:
+            controles.append([Paragraph(item.paciente.nombres + ' ' + item.paciente.apellidos, celda), ])
+        headings = (Paragraph('Nro', cabecera), Paragraph('Fecha', cabecera), Paragraph('Nombre', cabecera), Paragraph('Detalle', cabecera), Paragraph('Costo', cabecera))
+        t1 = Table([headings] + particulares, colWidths=[1 * cm, 2.2 * cm, 8.8 * cm, 5 * cm, 2.5 * cm])
+        t1.setStyle(TableStyle(
+        [
+            ('GRID', (0, 0), (6, -1), 1, colors.black),
+            ('LINEBELOW', (0, 0), (-1, 0), 2, colors.black),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.black)
+        ]
+        ))
+
+        # headings = (Paragraph('Nro', cabecera), Paragraph('Nombre', cabecera), Paragraph('Detalle', cabecera), Paragraph('Procedencia', cabecera), Paragraph('Costo',cabecera))
+        # t2 = Table([headings] + asegurados, colWidths=[1 * cm, 7 * cm, 3 * cm, 6 * cm, 2 * cm])
+        # t2.setStyle(TableStyle(
+        # [
+        #     ('GRID', (0, 0), (6, -1), 1, colors.black),
+        #     ('LINEBELOW', (0, 0), (-1, 0), 2, colors.black),
+        #     ('BACKGROUND', (0, 0), (-1, 0), colors.black)
+        # ]
+        # ))
+
+        # headings = (Paragraph('Nombre', cabecera),)
+        # t3 = Table([headings] + controles, colWidths=[19 * cm, ])
+        # t3.setStyle(TableStyle(
+        #     [
+        #         ('GRID', (0, 0), (6, -1), 1, colors.black),
+        #         ('LINEBELOW', (0, 0), (-1, 0), 2, colors.black),
+        #         ('BACKGROUND', (0, 0), (-1, 0), colors.black)
+        #     ]
+        # ))
+
+        movimiento.append(t1)
+        # movimiento.append(subasegurados)
+        # movimiento.append(t2)
+        # movimiento.append(subcontroles)
+        # movimiento.append(t3)
+        doc.build(movimiento)
+        response.write(buff.getvalue())
+        buff.close()
+        return response
+
 class Reporterec(View):
     def subrayar(self, pdf, x, y, texto):
         tam = len(texto)

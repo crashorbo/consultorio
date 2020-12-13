@@ -13,4 +13,5 @@ urlpatterns = [
     path('ingresos-seguro-deposito/<pk>/', login_required(views.ingresos_seguro_deposito), name='ingresos-seguro-deposito'),
     path('ingresos-seguro-filtro/', login_required(views.ingresos_seguro_filtro), name='ingresos-seguro-filtro'),
     path('ingresos-seguro-reporte/<pk>/', login_required(views.ingresos_seguro_reporte), name='ingresos-seguro-reporte'),
+    path('ingresos-particular-reporte/<pk>/', login_required(views.ingresos_particular_reporte), name='ingresos-particular-reporte'),
 ]

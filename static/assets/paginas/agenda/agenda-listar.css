@@ -88,7 +88,7 @@
 
 .consulta-lista {
     position: relative;
-    height: calc(100% - 25px);
+    height: calc(100% - 75px);
     margin: 0;
     padding: 0 0 30px;
     overflow-y: scroll;
@@ -100,6 +100,13 @@
     max-width: 70%;
     margin: 5% auto 10%;
     text-align: center;
+}
+
+.agenda .header {
+    font-size: 2em;
+    max-width: 400px;
+    margin: 40px auto 0;
+    font-weight: 600;
 }
 
 .schedule-item {
@@ -136,6 +143,15 @@
     height: inherit;
     min-width: 80px;
     border-right: 2px solid #ecf2f5;
+}
+
+.schedule-actions {
+    position: relative;
+    display: flex;
+    margin-left: auto;
+    padding-right: 30px;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .start-time {
@@ -181,6 +197,17 @@
     font-weight: 300;
 }
 
+.info-costo {
+    margin-top: 3px;
+    color: #7f95bb;
+    font-weight: 500;
+    text-align: right;
+}
+
+.info-costo  span {
+    
+}
+
 .info span {
     margin-right: 20px;
 }
@@ -211,3 +238,8 @@
 .state-danger {
     background-color: #fc4b6c;
 }
+
+#lista-consultas {
+    padding: 0;
+    height: 100%;
+}    
