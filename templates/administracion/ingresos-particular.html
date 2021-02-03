@@ -62,6 +62,12 @@
                         Fecha Fin
                       </th>
                       <th class="lt-column align-center is-hideable is-sortable">
+                        Ingreso
+                      </th>
+                      <th class="lt-column align-center is-hideable is-sortable">
+                        Egreso
+                      </th>
+                      <th class="lt-column align-center is-hideable is-sortable">
                         Total
                       </th>
                       <th class="lt-column align-center is-hideable is-sortable">
@@ -85,12 +91,15 @@
                             <td class="lt-cell align-center" style="width: 30px">{{ forloop.counter|contador:ingresos.number }}</td>
                             <td class="lt-cell align-center">{{ ingreso.fecha_inicio|date:"d/m/Y" }}</td>
                             <td class="lt-cell align-center">{{ ingreso.fecha_fin|date:"d/m/Y" }}</td>
+                            <td class="lt-cell align-right">{{ ingreso.ingreso}}</td>
+                            <td data-url="asdsdfasfdsa" class="lt-cell align-right tdegreso">{{ ingreso.egreso }}</td>
                             <td class="lt-cell align-right">{{ ingreso.total }}</td>
                             <td class="lt-cell align-center">{% if ingreso.fecha_deposito %}{{ ingreso.fecha_deposito|date:"d/m/Y" }}{% endif %}</td>
                             <td class="lt-cell align-right" style="width: 100px">
                               {% if ingreso.photo %}<a href="{{ ingreso.photo.url }}" target="_blank"><i class="fa fa-file-image-o"></i></a>{% endif %}
-                              <a class="m-l-5" href="{% url 'ingresos-particular-reporte' pk=ingreso.id %}"><i class="fa fa-print"></i></a>
-                              <a class="m-l-5" href="{% url 'ingresos-particular-deposito' pk=ingreso.id %}"><i class="fa fa-upload"></i></a>
+                              <a class="m-l-5" href="{% url 'ingresos-particular-reporte' pk=ingreso.id %}"><i class="fa fa-print"></i></a>                              
+                              <a class="m-l-5" href=""><i class="fa fa-upload"></i></a>
+                              <a class="m-l-5" href="{% url 'ingresos-particular-deposito' pk=ingreso.id %}"><i class="fa fa-trash"></i></a>
                             </td>
                           </tr>                          
                         {% endfor %}

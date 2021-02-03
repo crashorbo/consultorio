@@ -319,6 +319,10 @@ table {
     white-space: nowrap;
 }
 
+.fa-trash {
+    color:  #fc4b6c;
+}
+
 .app-light-table .lt-row td {
     padding: 5px 10px;
     border-color: #DADADA;
@@ -334,4 +338,8 @@ table {
 
 .app-light-table .lt-row.lt-expanded-row td, .app-light-table .lt-row.lt-no-data td {
     padding: 15px;
+}
+
+.tdegreso {
+    cursor: pointer;
 }

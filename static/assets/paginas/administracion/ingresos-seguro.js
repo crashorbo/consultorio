@@ -109,7 +109,7 @@ waypointContainer.addEventListener("click", e => {
             })
         })
     }
-    if (e.target.classList.contains('fa-file-pdf-o')) {
+    if (e.target.classList.contains('fa-print')) {
         e.preventDefault();        
         this_url = e.target.parentNode.getAttribute('href')
         printJS(this_url);

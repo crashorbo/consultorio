@@ -45,6 +45,7 @@ lib64/
 parts/
 sdist/
 var/
+media/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -86,9 +87,11 @@ __pycache__/
 local_settings.py
 staticfiles/
 .env
+
 db.sqlite3
+historial/
+media/
+media/Documentos/
 
 # VSCODE
 .vscode/
-historial/
-media/

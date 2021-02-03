@@ -114,6 +114,13 @@ waypointContainer.addEventListener("click", e => {
         this_url = e.target.parentNode.getAttribute('href')
         printJS(this_url);
     }
+
+    if (e.target.classList.contains("tdegreso")){
+        e.preventDefault();
+
+        $("#responsive-modal").modal('show');
+        console.log(e.target.dataset.url)
+    }
 });
 
 const filtroFechas = () => {    

@@ -1772,8 +1772,10 @@ File: scss
 /*============================================================== 
  For all pages 
  ============================================================== */
-#main-wrapper {
-  width: 100%; }
+#main-wrapper {  
+  width: 100%; 
+  overflow-y: auto;  
+}
 
 .boxed #main-wrapper {
   width: 100%;

@@ -6,8 +6,8 @@ $(document).ready(function(){
   var calendar = $('#calendar').fullCalendar({
     defaultView: 'agendaDay',
     slotDuration: '00:15',
-    minTime: '08:00:00',
-    maxTime: '22:00:00',
+    minTime: '00:00:00',
+    maxTime: '23:59:59',
     height: 700,
     header: {
       left: 'prev,next today',

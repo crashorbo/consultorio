@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import IngresoSeguro, IngresoParticular
+from .models import IngresoSeguro, IngresoParticular, EgresoParticular
 
 class IngresosParticularForm(forms.ModelForm):
     class Meta:
@@ -28,3 +28,8 @@ class IngresosSeguroDepositoForm(forms.ModelForm):
     class Meta:
         model = IngresoSeguro
         fields = ('fecha_deposito', 'photo')
+
+class EgresoParticularForm(forms.ModelForm):
+    class Meta:
+        model = EgresoParticular
+        fields = ('fecha', 'monto', 'descripcion')

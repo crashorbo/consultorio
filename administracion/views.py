@@ -43,6 +43,7 @@ def ingresos_particular_create(request):
         if form.is_valid():
             ingreso = form.save(commit=False)
             ingreso.total = Agendaserv.objects.filter(agenda__tipo=0, fecha__range=(ingreso.fecha_inicio, ingreso.fecha_fin), agenda__deleted=False).aggregate(Sum('costo'))['costo__sum'] or 0.00
+            ingreso.ingreso = ingreso.total
             ingreso.save()
             return JsonResponse({"message": "Se ha registrado con exito el Ingreso", "state":"success"}, status=200)  
     return render(request, 'administracion/ingresos-particular-create.html', {'form': form})
