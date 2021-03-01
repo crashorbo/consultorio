@@ -4,6 +4,8 @@
 
 {% load administracion_tags %}
 
+{% load agenda_tags %}
+
 {% block css %}
   <!-- Date picker plugins css -->
   <link href="{% static "assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css" %}" rel="stylesheet" type="text/css" />
@@ -13,10 +15,12 @@
 
 {% block contenido %} 
   <ul class="tabs-navigation tabs-reports">    
+    {% if request.user|has_group:"medico" %}
     <li class="tab-link background">
       <a href={% url 'ingresos-particular' %} class="active">Ingresos Particular</a>
     </li>
-    <li class="tab-link background">
+    {% endif %}
+    <li class="tab-link background">      
       <a href={% url 'ingresos-seguro' %}>Ingresos Seguro</a>
     </li>
   </ul>

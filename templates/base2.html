@@ -63,13 +63,24 @@
         {% if request.user|has_group:"medico" %}
         <div class="nav-item">
             <a href="{% url "agenda-listar" %}" class="{% active 'agenda-listar' %}" ><i class="fa-sidebar icon-doctor"></i></a>
-        </div>            
+        </div>    
+        {% endif %}         
+        {% comment %} {% if request.user|has_group:"medico" %}
         <div class="nav-item">
             <a href="{% url "reporte-index" %}" class="{% active 'reporte-index' %}"><i class="fa fa-sidebar fa-clipboard"></i></a>
         </div>
+        {% endif %}  {% endcomment %}
+        {% if request.user|has_group:"medico" %}
         <div class="nav-item">
             <a href={% url 'ingresos-particular'%} class="{% active 'ingresos-particular' %}"><i class="fa fa-sidebar fa-bank"></i></a>
         </div>                    
+        {% endif %}         
+        {% if request.user|has_group:"auxiliar" %}
+        <div class="nav-item">
+            <a href={% url 'ingresos-seguro'%} class="{% active 'ingresos-seguro' %}"><i class="fa fa-sidebar fa-bank"></i></a>
+        </div>                    
+        {% endif %}         
+        {% if request.user|has_group:"medico" %}
         <div class="nav-item">
             <a href="{% url "configuracion" %}" class="{% active 'configuracion' %}"><i class="fa fa-sidebar fa-gear"></i></a>
         </div>   
