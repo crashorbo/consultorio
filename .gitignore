@@ -45,7 +45,7 @@ lib64/
 parts/
 sdist/
 var/
-media/
+media/**
 *.egg-info/
 .installed.cfg
 *.egg
@@ -90,8 +90,6 @@ staticfiles/
 
 db.sqlite3
 historial/
-media/
-media/Documentos/
 
 # VSCODE
 .vscode/
