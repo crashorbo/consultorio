@@ -61,7 +61,14 @@
       }
     },
     "bServerSide": true,
-    "sAjaxSource": "/servicio/as_json"
+    "sAjaxSource": "/servicio/as_json",
+    "columnDefs" : [
+      {
+        "targets": 2,
+        "orderable": false,
+        "searchable": false
+      }
+    ]
   });
   
   $('#registrar-servicio').on('click', function(e){

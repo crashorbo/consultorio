@@ -62,7 +62,14 @@
       }
     },
     "bServerSide": true,
-    "sAjaxSource": "/seguro/as_json"
+    "sAjaxSource": "/seguro/as_json",
+    "columnDefs" : [
+      {
+        "targets": 3,
+        "orderable": false,
+        "searchable": false
+      }
+    ]
   });
   
   $('#registrar-seguro').on('click', function(e){

@@ -8,7 +8,7 @@ from django.db.models.query import QuerySet
 class MyModelMixin(object):
 
   def q_for_search_word(self, word):
-    return Q(nombres__icontains=word) | Q(apellidos__icontains=word) | Q(documento__icontains=word) | Q(nro_documento__icontains=word) | Q(telefono__icontains=word)
+    return Q(nombre__icontains=word) 
 
   def q_for_search(self, search):
     q = Q()

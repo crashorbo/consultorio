@@ -6,7 +6,7 @@ from django.db.models.query import QuerySet
 class MyModelMixin(object):
 
   def q_for_search_word(self, word):
-    return Q(nombre__icontains=word) | Q(direccion__icontains=word) | Q(telefono__icontains=word)
+    return Q(nombre__icontains=word) | Q(descripcion__icontains=word)
 
   def q_for_search(self, search):
     q = Q()
@@ -44,3 +44,8 @@ class Tipolente(models.Model):
 
   class Meta:
     ordering = ('nombre',)
+
+class Examen(models.Model):
+  nombre = models.CharField(max_length=100, default='')
+  titulo = models.CharField(max_length=200, default='')
+  

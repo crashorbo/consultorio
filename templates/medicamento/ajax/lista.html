@@ -62,7 +62,14 @@
       }
     },
     "bServerSide": true,
-    "sAjaxSource": "/medicamento/as_json"
+    "sAjaxSource": "/medicamento/as_json",
+    "columnDefs" : [
+      {
+        "targets": [1, 2, 3],
+        "orderable": false,
+        "searchable": false
+      }
+    ]
   });
   
   $('#registrar-medicamento').on('click', function(e){

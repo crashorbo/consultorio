@@ -20,7 +20,7 @@
   <div class="col-md-12 p-0">
     <div class="card"> 
       <div class="card-body">
-      <table id="myTable" class="table table-sm table-bordered table-hover">
+      <table id="myTable" class="table table-sm table-bordered table-striped">
         <thead>
             <tr>
                 <th>Nombre</th>
@@ -61,7 +61,14 @@
       }
     },
     "bServerSide": true,
-    "sAjaxSource": "/configuracion/as_json"
+    "sAjaxSource": "/configuracion/as_json",
+    "columnDefs" : [
+      {
+        "targets": [1, 2],
+        "orderable": false,
+        "searchable": false
+      }
+    ]
   });
   
   $('#registrar-tipolente').on('click', function(e){
