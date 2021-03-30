@@ -1,19 +1,17 @@
 from django.shortcuts import render
-from django.views.generic import ListView, View, UpdateView, CreateView, TemplateView
+from django.views.generic import ListView, View, UpdateView, CreateView, FormView
 from braces.views import JSONResponseMixin
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.shortcuts import render
-import datetime
-from .models import Tipolente
-from .forms import TipolenteForm
+
+from .models import Tipolente, Examen
+from .forms import TipolenteForm, ExamenForm
 
 # Create your views here.
 class IndexView(View):
-    def get(self, *args, **kwargs):
-      now = datetime.date.today().year
-      frango = list(range(now, 2007, -1))
-      return render(self.request, 'configuracion/index.html', {'frango': frango})
+    def get(self, *args, **kwargs):      
+      return render(self.request, 'configuracion/index.html')
 
 
 class TableAsJSON(JSONResponseMixin, View):
@@ -89,3 +87,19 @@ class AjaxEliminarView(View):
     tipo_lente = Tipolente.objects.get(pk=request.GET.get('id'))
     tipo_lente.delete()
     return JsonResponse(data)
+
+class ExamenCreateView(FormView):
+  form_class = ExamenForm
+  template_name = 'configuracion/ajax/examen/crear.html'
+
+  def form_valid(self, form):
+    form.save()
+    return JsonResponse({"success": True})
+  
+  def form_invalid(self, form):
+    return JsonResponse({"success": False, "errores": [(k, v[0]) for k, v in form.errors.items()]})
+
+class ExamenListView(ListView):
+  template_name = 'configuracion/ajax/examen/lista.html'
+  model = Examen
+

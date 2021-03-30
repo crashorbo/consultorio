@@ -48,4 +48,7 @@ class Tipolente(models.Model):
 class Examen(models.Model):
   nombre = models.CharField(max_length=100, default='')
   titulo = models.CharField(max_length=200, default='')
-  
+  detalle = models.TextField(default='')
+
+  def __str__(self) -> str:
+      return self.nombre

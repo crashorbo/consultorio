@@ -54,7 +54,18 @@ $(document).ready(function(){
         $("#mainbody").html(data);
       }  
     })
-  });  
+  });
+  $('#examenes').on('click', function(e){
+    e.preventDefault();
+    $thisUrl = $(this).attr("href");
+    $.ajax({
+      method: "get",
+      url: $thisUrl,
+      success: function(data){
+        $("#mainbody").html(data);
+      }  
+    })
+  });
   controlInicio()
 });
 

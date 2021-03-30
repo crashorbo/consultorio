@@ -1,5 +1,12 @@
 {% extends 'base2.html' %}
 {% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static "assets/plugins/html5-editor/bootstrap-wysihtml5.css" %}" />
+{% endblock css %}
+
+
+
 {% block contenido %}
 <!-- ============================================================== -->
 <!-- End Bread crumb and right sidebar toggle -->
@@ -17,6 +24,7 @@
                 <li class="list-group-item"><a id="servicios" href="{% url "servicio-ajax-lista" %}">Servicios</a></li>
                 <li class="list-group-item"><a id="tipolentes" href="{% url "tipolente-ajax-lista" %}">Tipo Lentes</a></li>
                 <li class="list-group-item"><a id="medicamentos" href="{% url "medicamento-ajax-lista" %}">Medicamentos</a></li>
+                <li class="list-group-item"><a id="examenes" href="{% url 'examen-list' %}">Examenes</a></li>
             </ul>
             <span class="m-t-40"></span>
         </div>        
@@ -30,6 +38,6 @@
 </div>
 {% endblock %}
 {% block js %}
-<script src="{% static "assets/plugins/echarts/echarts-all.js" %}"></script>
+<script src="{% static 'assets/plugins/tinymce/tinymce.min.js' %}"></script>
 <script src="{% static "assets/paginas/configuracion/index.js" %}"></script>
 {% endblock %}

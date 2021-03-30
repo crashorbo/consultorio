@@ -53,12 +53,13 @@
             <div class="col-md-12">
               <h6>Procedencia: <em>{{ consulta.procedencia }}</em></h6>
             </div>
-            <div class="col-md-10">
+            <div class="col-md-9">
               <h6>Referencia: <em>{{ consulta.referencia }}</em></h6>
             </div>
-            <div class="col-md-2 m-b-5">
+            <div class="col-md-3 m-b-5">
               <button class="paciente-examen btn btn-xs btn-success" data-url="{% url "archivopdf-listar" pk=paciente.id %}" type="button"><i class="fa fa-file-pdf-o"></i></button>
               <button class="paciente-examen btn btn-xs btn-info" data-url="{% url "archivopdf-listar" pk=paciente.id %}" type="button"><i class="fa fa-folder-open-o"></i></button>
+              <button class="btn btn-xs btn-warning" data-url="{% url "archivopdf-listar" pk=paciente.id %}" type="button"><i class="fa fa-bookmark-o"></i></button>
             </div>
             {% if form.errors %}
             <div class="alert alert-danger">
