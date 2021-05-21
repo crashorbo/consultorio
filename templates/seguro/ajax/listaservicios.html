@@ -12,7 +12,9 @@
         <tr>
           <td><h6>{{ item.servicio.nombre }}</h6></td>
           <td class="text-right"><h6>{{ item.costo }}</h6></td>
-          <td class="text-right"><span data-url="{% url 'segurocosto-ajax-eliminar' pk=item.id %}"><button class="btn btn-xs btn-danger eliminar"><i class="fa fa-close"></i></button></span></td>
+          <td class="text-right">
+            {% comment %} <span data-url="{% url 'segurocosto-ajax-eliminar' pk=item.id %}"><button class="btn btn-xs btn-danger eliminar"><i class="fa fa-close"></i></button></span> {% endcomment %}
+          </td>
         </tr>
       {% endfor %}
     </tbody>
