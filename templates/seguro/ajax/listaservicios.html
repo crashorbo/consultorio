@@ -4,13 +4,15 @@
       <tr>
         <th>Servicio</th>
         <th>Costo</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       {% for item in servicios %}
         <tr>
-          <th><h6>{{ item.servicio.nombre }}</h6></th>
-          <th class="text-right"><h6>{{ item.costo }}</h6></th>
+          <td><h6>{{ item.servicio.nombre }}</h6></td>
+          <td class="text-right"><h6>{{ item.costo }}</h6></td>
+          <td class="text-right"><span data-url="{% url 'segurocosto-ajax-eliminar' pk=item.id %}"><button class="btn btn-xs btn-danger eliminar"><i class="fa fa-close"></i></button></span></td>
         </tr>
       {% endfor %}
     </tbody>

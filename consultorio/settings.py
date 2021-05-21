@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_js_reverse',
     'ckeditor',
+    'wkhtmltopdf',
     'core.apps.CoreConfig',
     'agenda.apps.AgendaConfig',
     'paciente.apps.PacienteConfig',
@@ -162,6 +163,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+WKHTMLTOPDF_CMD = 'D:/wkhtmltopdf/bin/wkhtmltopdf'
+
+WKHTMLTOPDF_CMD_OPTIONS = {
+    'quiet': True,
+}
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 

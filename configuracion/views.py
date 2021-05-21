@@ -4,6 +4,12 @@ from braces.views import JSONResponseMixin
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.template.loader import get_template, render_to_string
+import html
+
+from django.shortcuts import HttpResponse
+from fpdf import FPDF, HTMLMixin
+from wkhtmltopdf.views import PDFTemplateView
 
 from .models import Tipolente, Examen
 from .forms import TipolenteForm, ExamenForm
@@ -103,3 +109,15 @@ class ExamenListView(ListView):
   template_name = 'configuracion/ajax/examen/lista.html'
   model = Examen
 
+
+class ExamenPrintPdf(PDFTemplateView):  
+  filename = 'examen.pdf'
+  template_name = 'configuracion/ajax/examen/print.html'
+  cmd_options = {
+    'margin-top': 50,
+  }
+
+  def get_context_data(self, **kwargs):
+        context = super(ExamenPrintPdf, self).get_context_data(**kwargs)
+        context['foo'] = 'BAR'
+        return context

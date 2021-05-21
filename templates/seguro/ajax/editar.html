@@ -66,13 +66,15 @@
               <tr>
                 <th>Servicio</th>
                 <th>Costo</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               {% for item in seguro.segurocosto_set.all %}
                 <tr>
-                  <th><h6>{{ item.servicio.nombre }}</h6></th>
-                  <th class="text-right"><h6>{{ item.costo }}</h6></th>
+                  <td><h6>{{ item.servicio.nombre }}</h6></td>
+                  <td class="text-right"><h6>{{ item.costo }}</h6></td>
+                  <td class="text-right"><span data-url="{% url 'segurocosto-ajax-eliminar' pk=item.id %}"><button class="btn btn-xs btn-danger eliminar"><i class="fa fa-close"></i></button></span></td>
                 </tr>
               {% endfor %}
             </tbody>
@@ -84,6 +86,17 @@
     </div>
 </div>
 <script>
+  const listaServicios = document.querySelector('#listaservicios');
+  
+  listaServicios.addEventListener("click", (e) => {
+    const eliminar = e.target.closest('span');       
+    if (eliminar){      
+      fetch(eliminar.getAttribute("data-url"))
+      .then(response => response.json())
+      .then(data => console.log(data));
+    }    
+  })
+
   $('#form-servicio').on('submit',function (e) {
       e.preventDefault();
       var $formData = $(this).serialize();
@@ -126,6 +139,7 @@
           }
       })
   });
+
   $("input").keyup(function(e){
       this.value = this.value.toUpperCase();
   });

@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
-from .views import ExamenCreateView, ExamenListView, IndexView, AjaxListView, TableAsJSON, AjaxCrearView, AjaxEditarView, AjaxEliminarView
+from .views import ExamenCreateView, ExamenListView, IndexView, AjaxListView, TableAsJSON, AjaxCrearView, AjaxEditarView, AjaxEliminarView, ExamenPrintPdf
 
 urlpatterns = [
   path('', login_required(IndexView.as_view()), name='configuracion'),
@@ -13,4 +13,5 @@ urlpatterns = [
   path('tipo-lente/ajax-eliminar', login_required(AjaxEliminarView.as_view()), name='tipolente-ajax-eliminar'),
   path('examen/ajax/list/', login_required(ExamenListView.as_view()), name='examen-list'),
   path('examen/ajax/create/', login_required(ExamenCreateView.as_view()), name='examen-create'),
+  path('examen/print/<pk>/', login_required(ExamenPrintPdf.as_view()), name='examen-print')
 ]

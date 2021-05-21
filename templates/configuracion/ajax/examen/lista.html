@@ -36,7 +36,11 @@
                         <td>{{ object.nombre }}</td>
                         <td>{{ object.titulo }}</td>
                         <td>{{ object.detalle|safe }}</td>
-                        <td><button class="btn btn-xs btn-warning"><i class="fa fa-edit"></i></button><button class="btn btn-xs btn-danger m-l-5"><i class="fa fa-close"></i></button></td>
+                        <td>
+                          <a href="{% url 'examen-print' pk=object.id %}" class="btn btn-xs btn-default m-l-5"><i class="fa fa-print"></i></a>
+                          <button class="btn btn-xs btn-warning"><i class="fa fa-edit"></i></button>
+                          <button class="btn btn-xs btn-danger m-l-5"><i class="fa fa-close"></i></button>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

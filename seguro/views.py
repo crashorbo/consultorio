@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, View, UpdateView, CreateView
+from django.views.generic import ListView, View, UpdateView, CreateView, DeleteView
 from braces.views import JSONResponseMixin
 from django.urls import reverse_lazy
 from django.http import JsonResponse
@@ -99,3 +99,10 @@ class AjaxSegurocostoCrear(CreateView):
       model.save()
     servicios = Segurocosto.objects.filter(seguro=model.seguro.id)
     return render(self.request, 'seguro/ajax/listaservicios.html', {'servicios': servicios})
+
+class AjaxSeguroCostoEliminar(View):
+  def get(self, *args, **kwargs):
+    seguro_costo = Segurocosto.objects.get(id=self.kwargs['pk'])
+    seguro_costo.delete()
+    return JsonResponse({"message": "Se ha eliminado el costo de servicio con exito"}, status=200)
+  
