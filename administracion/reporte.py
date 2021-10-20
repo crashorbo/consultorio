@@ -123,7 +123,7 @@ def reporte_seguro(registro, registros, total):
     for ingreso in registros:
         if not ingreso.costo == 0:  
             asegurado = [Paragraph('{}'.format(it), celda), Paragraph(ingreso.fecha.strftime("%d/%m/%Y"), celda), Paragraph('{} {}'.format(ingreso.agenda.paciente.nombres, ingreso.agenda.paciente.apellidos), celda), 
-            Paragraph('{}'.format(ingreso.agenda.matricula), celda), Paragraph(ingreso.agenda.tipo_beneficiario, celda), Paragraph(ingreso.servicio.nombre,celda),
+            Paragraph('{}'.format(ingreso.agenda.matricula), celda), Paragraph(ingreso.agenda.tipo_beneficiario, celda), Paragraph(ingreso.servicio.nombre[2:],celda),
             Paragraph('{}'.format(ingreso.costo), celdaDerecha)]
             asegurados.append(asegurado)
             it = it+1
