@@ -90,12 +90,12 @@ def ingresos_seguro_deposito(request, pk):
 
 def ingresos_seguro_reporte(request, pk):
     ingreso = IngresoSeguro.objects.get(id=pk)
-    ingresos = Agendaserv.objects.filter(agenda__seguro=ingreso.seguro, agenda__tipo=1, fecha__range=(ingreso.fecha_inicio, ingreso.fecha_fin), agenda__deleted=False).order_by('fecha')
+    ingresos = Agendaserv.objects.filter(agenda__seguro=ingreso.seguro, agenda__tipo=1, fecha__range=(ingreso.fecha_inicio, ingreso.fecha_fin), agenda__deleted=False).order_by('fecha')   
     total = ingresos.aggregate(Sum('costo'))['costo__sum'] or 0.00    
     return reporte_seguro(ingreso, ingresos, total)
 
 def ingresos_particular_reporte(request, pk):
     ingreso = IngresoParticular.objects.get(id=pk)
     ingresos = Agendaserv.objects.filter(agenda__tipo=0, fecha__range=(ingreso.fecha_inicio, ingreso.fecha_fin), agenda__deleted=False).order_by('fecha')
-    total = ingresos.aggregate(Sum('costo'))['costo__sum'] or 0.00    
+    total = ingresos.aggregate(Sum('costo'))['costo__sum'] or 0.00
     return reporte_particular(ingreso, ingresos, total)
